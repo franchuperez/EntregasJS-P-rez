@@ -1,0 +1,6 @@
+-DOM y Eventos
+-Arrays y Objetos
+-storage(guardar, recuperar, borrar, vaciar)
+-2 Funciones de orden superior DIFERENTES
+
+https://docs.google.com/presentation/d/1RsgnxWj9y2YlurvlZpCBpqxnsIkvXY3wxWZJH2kEWwc/edit?slide=id.p11#slide=id.p11
