@@ -56,8 +56,7 @@ function mostrarCarrito() {
 const finalizarBtn = document.createElement("button");
 finalizarBtn.textContent = "Finalizar compra";
 finalizarBtn.addEventListener("click", () => {
-  window.location.href = "pages/gracias.html";
-
+  window.location.href = "pages/formulario.html";
 });
 contenedorCarrito.appendChild(finalizarBtn);
 
