@@ -1,0 +1,6 @@
+[
+{ "id": 1, "nombre": "HTML desde cero", "precio": 5000 },
+{ "id": 2, "nombre": "CSS avanzado", "precio": 7000 },
+{ "id": 3, "nombre": "JavaScript completo", "precio": 10000 },
+{ "id": 4, "nombre": "React", "precio": 12000 }
+]
