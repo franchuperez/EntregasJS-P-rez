@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Service</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <script defer src="./js/main.js"></script>
+</head>
+<body>
+    <main>
+        <h1>Simulador de Service para Autos</h1>
+        <form id="formService">
+            <label>Nombre:
+                <input type="text" id="nombre" required>
+            </label>
+            <label>Modelo del Auto:
+                <input type="text" id="modelo" required>
+            </label>
+            <label>Kilometraje Actual:
+                <input type="number" id="km" required>
+            </label>
+            <label>Tipo de Service:
+                <select id="tipoService" required>
+                    <option value="">--Seleccione--</option>
+                    <option value="basico">Básico</option>
+                    <option value="completo">Completo</option>
+                    <option value="premium">Premium</option>
+                </select>
+            </label>
+            <button type="submit">Calcular Presupuesto</button>
+        </form>
+
+        <section id="acciones">
+            <button id="verHistorial">Ver Historial</button>
+            <button id="vaciarHistorial">Vaciar Historial</button>
+        </section>
+
+        <div id="resultado"></div>
+        <div id="historial"></div>
+    </main>
+</body>
+</html>
