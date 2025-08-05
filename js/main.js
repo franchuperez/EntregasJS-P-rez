@@ -1,23 +1,15 @@
 const contenedorCursos = document.getElementById("cursos");
 const contenedorCarrito = document.getElementById("carrito");
 const btnVaciar = document.getElementById("vaciar");
-const URL_LOCAL = "data/cursos.json";
+const URL_LOCAL = "js/cursos.json";
 
-/* Guardar carrito en localStorage */
-function guardarCarrito() {
-  localStorage.setItem("carrito", JSON.stringify(carrito));
-}
-
-/* Vaciar carrito */
 function vaciarCarrito() {
   carrito = [];
   guardarCarrito();
 }
 
-/* Mostrar carrito en pantalla */
 function mostrarCarrito() {
   if (!contenedorCarrito) return;
-
   contenedorCarrito.innerHTML = "";
 
   if (carrito.length === 0) {
@@ -53,41 +45,16 @@ function mostrarCarrito() {
   totalDiv.innerHTML = `<strong>Total: $${total}</strong>`;
   contenedorCarrito.appendChild(totalDiv);
 
-const finalizarBtn = document.createElement("button");
-finalizarBtn.textContent = "Finalizar compra";
-finalizarBtn.addEventListener("click", () => {
-  window.location.href = "pages/formulario.html";
-});
-contenedorCarrito.appendChild(finalizarBtn);
-
-}
-
-/* Mostrar formulario de compra */
-function mostrarFormularioCompra() {
-  contenedorCarrito.innerHTML = `
-    <h3>Finalizar compra</h3>
-    <form id="formCompra">
-      <input type="text" id="nombre" placeholder="Tu nombre" required /><br>
-      <input type="email" id="email" placeholder="Tu correo" required /><br>
-      <input type="text" id="direccion" placeholder="Dirección de entrega" required /><br>
-      <button type="submit">Confirmar compra</button>
-    </form>
-  `;
-
-  document.getElementById("formCompra").addEventListener("submit", e => {
-    e.preventDefault();
-
-    localStorage.removeItem("carrito");
-    carrito = [];
-
-    window.location.href = "gracias.html";
+  const finalizarBtn = document.createElement("button");
+  finalizarBtn.textContent = "Finalizar compra";
+  finalizarBtn.addEventListener("click", () => {
+    window.location.href = "pages/formulario.html";
   });
+  contenedorCarrito.appendChild(finalizarBtn);
 }
 
-/* Mostrar cursos en pantalla y agregar eventos */
 function mostrarCursos(cursos) {
   if (!contenedorCursos) return;
-
   contenedorCursos.innerHTML = "";
 
   cursos.forEach(curso => {
@@ -100,7 +67,6 @@ function mostrarCursos(cursos) {
     contenedorCursos.appendChild(div);
   });
 
-  // Agregar evento a botones "Agregar"
   document.querySelectorAll(".agregar").forEach(btn =>
     btn.addEventListener("click", e => {
       const id = parseInt(e.target.dataset.id);
@@ -109,7 +75,6 @@ function mostrarCursos(cursos) {
   );
 }
 
-/* Agregar curso al carrito buscando en JSON local */
 async function agregarCurso(id) {
   try {
     const res = await fetch(URL_LOCAL);
@@ -121,7 +86,6 @@ async function agregarCurso(id) {
       carrito.push(curso);
       guardarCarrito();
       mostrarCarrito();
-
       Toastify({
         text: `${curso.nombre} agregado al carrito`,
         duration: 3000,
@@ -133,7 +97,6 @@ async function agregarCurso(id) {
   }
 }
 
-/* Filtro de búsqueda por nombre */
 function aplicarFiltro(cursos) {
   const input = document.createElement("input");
   input.placeholder = "Buscar curso...";
@@ -146,7 +109,6 @@ function aplicarFiltro(cursos) {
   contenedorCursos.before(input);
 }
 
-/* Filtro por precio mínimo y máximo */
 function aplicarFiltroPorPrecio(cursos) {
   const container = document.createElement("div");
   const inputMin = document.createElement("input");
@@ -171,7 +133,6 @@ function aplicarFiltroPorPrecio(cursos) {
   contenedorCursos.before(container);
 }
 
-/* Cargar cursos desde JSON local */
 async function cargarCursos() {
   try {
     const res = await fetch(URL_LOCAL);
@@ -183,16 +144,12 @@ async function cargarCursos() {
     aplicarFiltroPorPrecio(cursos);
   } catch (error) {
     console.error("Error al cargar cursos:", error);
-  } finally {
-    console.log("Proceso de carga finalizado");
   }
 }
 
-/* Evento para vaciar carrito */
 btnVaciar.addEventListener("click", () => {
   vaciarCarrito();
   mostrarCarrito();
-
   Toastify({
     text: "Carrito vaciado",
     duration: 2000,
@@ -200,7 +157,6 @@ btnVaciar.addEventListener("click", () => {
   }).showToast();
 });
 
-/* Iniciar app */
 document.addEventListener("DOMContentLoaded", () => {
   cargarCursos();
   mostrarCarrito();

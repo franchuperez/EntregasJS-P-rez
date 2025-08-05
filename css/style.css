@@ -1,7 +1,7 @@
 body {
 font-family: Arial, sans-serif;
 margin: 2rem;
-background: #f4f4f4;
+background: #ffffff;
 color: #333;
 }
 
@@ -17,7 +17,7 @@ padding-bottom: 0.5rem;
 #vaciar {
 display: block;
 margin: 0 auto 2rem auto;
-background-color: #ff0019;
+background-color: #ff364a;
 border: black 1px solid;
 }
 
@@ -105,3 +105,5 @@ background-color: green;
 form button[type="submit"]:hover {
 background-color: darkgreen;
 }
+
+/* formularios.html */
