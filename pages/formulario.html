@@ -1,47 +1,16 @@
+<!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Formulario de compra</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 400px;
-            margin: 50px auto;
-            padding: 10px;
-            background-color: #f7f7f7;
-        }
-        label {
-            display: block;
-            margin-top: 15px;
-            font-weight: bold;
-        }
-        input {
-            width: 100%;
-            padding: 8px;
-            margin-top: 5px;
-            box-sizing: border-box;
-        }
-        button {
-            margin-top: 20px;
-            padding: 10px 15px;
-            background-color: green;
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        button:hover {
-            background-color: darkgreen;
-        }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Formulario de compra</title>
+<link rel="stylesheet" href="../css/style.css" />
 </head>
 <body>
-    <h2>Finalizar compra</h2>
     <form id="formCompra">
+        <h2>Finalizar compra</h2>
         <label for="nombre">Nombre y apellido</label>
         <input type="text" id="nombre" name="nombre" value="Juan Pérez" required />
-
         <label for="edad">Edad</label>
         <input type="number" id="edad" name="edad" value="30" required />
 
@@ -51,13 +20,13 @@
         <button type="submit">Confirmar compra</button>
     </form>
 
-    <script>
-        const form = document.getElementById("formCompra");
-        form.addEventListener("submit", (e) => {
-            e.preventDefault();
-            localStorage.removeItem("carrito");
-            window.location.href = "gracias.html";
-        });
-    </script>
+<script>
+    const form = document.getElementById("formCompra");
+    form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        localStorage.removeItem("carrito");
+        window.location.href = "gracias.html";
+    });
+</script>
 </body>
 </html>
