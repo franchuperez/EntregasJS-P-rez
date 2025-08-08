@@ -5,28 +5,48 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Formulario de compra</title>
 <link rel="stylesheet" href="../css/style.css" />
+
 </head>
 <body>
-    <form id="formCompra">
-        <h2>Finalizar compra</h2>
-        <label for="nombre">Nombre y apellido</label>
-        <input type="text" id="nombre" name="nombre" value="Tú nombre" required />
-        <label for="edad">Edad</label>
-        <input type="number" id="edad" name="edad" value="Tú edad" required />
-
-        <label for="email">Dirección de correo</label>
-        <input type="email" id="email" name="email" value="tuemail@gmail.com" required />
-
-        <button type="submit">Confirmar compra</button>
-    </form>
+<form id="formCompra" aria-label="Formulario para finalizar compra">
+    <h2>Finalizar compra</h2>
+        <label for="nombre">Nombre completo</label>
+            <input
+                type="text"
+                    id="nombre"
+                    name="nombre"
+                    placeholder="Ej: Ana García"
+                    required
+                            />
+<label for="edad">Edad</label>
+    <input
+        type="number"
+        id="edad"
+        name="edad"
+        min="1"
+        max="120"
+        placeholder="Ej: 30"
+        required
+            />
+<label for="email">Correo electrónico</label>
+    <input
+        type="email"
+        id="email"
+        name="email"
+        placeholder="Ej: ana@email.com"
+        required
+            />
+    <button type="submit">Confirmar compra</button>
+</form>
 
 <script>
-    const form = document.getElementById("formCompra");
-    form.addEventListener("submit", (e) => {
-        e.preventDefault();
-        localStorage.removeItem("carrito");
-        window.location.href = "gracias.html";
-    });
+const form = document.getElementById("formCompra");
+
+form.addEventListener("submit", (e) => {
+e.preventDefault();
+localStorage.removeItem("carrito");
+window.location.href = "gracias.html";
+});
 </script>
 </body>
 </html>

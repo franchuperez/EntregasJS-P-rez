@@ -121,42 +121,65 @@ async function agregarCurso(id) {
 }
 
 /* filtrar noombre de los cursos */
-function aplicarFiltro(cursos) {
-  const input = document.createElement("input");
-  input.placeholder = "Buscar curso...";
-  input.addEventListener("input", () => {
-    const filtro = cursos.filter(c =>
-      c.nombre.toLowerCase().includes(input.value.toLowerCase())
-    );
-    mostrarCursos(filtro);
-  });
-  contenedorCursos.before(input);
-}
+/* NUEVO: filtros combinados por nombre y precio con diseño mejorado */
+function aplicarFiltros(cursos) {
+  const filtrosContainer = document.createElement("div");
+  filtrosContainer.className = "filtros-container";
 
-/* filtro de rango de precios para los cursos */
-function aplicarFiltroPorPrecio(cursos) {
-  const container = document.createElement("div");
+  // Buscar por nombre
+  const grupoNombre = document.createElement("div");
+  grupoNombre.className = "filtro-group";
+  const labelNombre = document.createElement("label");
+  labelNombre.textContent = "Buscar por nombre:";
+  const inputNombre = document.createElement("input");
+  inputNombre.placeholder = "Ej: React";
+  inputNombre.className = "filtro-input";
+  grupoNombre.append(labelNombre, inputNombre);
+
+  // Precio mínimo
+  const grupoMin = document.createElement("div");
+  grupoMin.className = "filtro-group";
+  const labelMin = document.createElement("label");
+  labelMin.textContent = "Precio mínimo:";
   const inputMin = document.createElement("input");
-  const inputMax = document.createElement("input");
-
-  inputMin.placeholder = "Precio mínimo";
+  inputMin.placeholder = "Ej: 5000";
   inputMin.type = "number";
+  inputMin.className = "filtro-input";
+  grupoMin.append(labelMin, inputMin);
 
-  inputMax.placeholder = "Precio máximo";
+  // Precio máximo
+  const grupoMax = document.createElement("div");
+  grupoMax.className = "filtro-group";
+  const labelMax = document.createElement("label");
+  labelMax.textContent = "Precio máximo:";
+  const inputMax = document.createElement("input");
+  inputMax.placeholder = "Ej: 15000";
   inputMax.type = "number";
+  inputMax.className = "filtro-input";
+  grupoMax.append(labelMax, inputMax);
 
-  [inputMin, inputMax].forEach(input =>
-    input.addEventListener("input", () => {
-      const min = parseFloat(inputMin.value) || 0;
-      const max = parseFloat(inputMax.value) || Infinity;
-      const filtrado = cursos.filter(c => c.precio >= min && c.precio <= max);
-      mostrarCursos(filtrado);
-    })
+  const aplicar = () => {
+    const nombre = inputNombre.value.toLowerCase();
+    const min = parseFloat(inputMin.value) || 0;
+    const max = parseFloat(inputMax.value) || Infinity;
+
+    const resultado = cursos.filter(c =>
+      c.nombre.toLowerCase().includes(nombre) &&
+      c.precio >= min &&
+      c.precio <= max
+    );
+
+    mostrarCursos(resultado);
+  };
+
+  [inputNombre, inputMin, inputMax].forEach(input =>
+    input.addEventListener("input", aplicar)
   );
 
-  container.append("Filtrar por precio: ", inputMin, inputMax);
-  contenedorCursos.before(container); 
+  filtrosContainer.append(grupoNombre, grupoMin, grupoMax);
+  contenedorCursos.before(filtrosContainer);
 }
+
 
 
 async function cargarCursos() {
@@ -166,8 +189,7 @@ async function cargarCursos() {
     const cursos = await res.json();
 
     mostrarCursos(cursos);           
-    aplicarFiltro(cursos);           
-    aplicarFiltroPorPrecio(cursos);  
+    aplicarFiltros(cursos);           
   } catch (error) {
     console.error("Error al cargar cursos:", error);
   }

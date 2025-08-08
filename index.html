@@ -5,17 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tienda de cursos</title>
     <link rel="stylesheet" href="css/style.css" />
+    <!-- libreria para las alaertas del carrito -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- iconos para el footer -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
 <body>
     <h1>Mis Cursos</h1>
-    <button id="vaciar">Vaciar carrito</button>
     <div id="cursos"></div>
-    <h2>Carrito</h2>
+    <h2 class="h2-index">Carrito</h2>
     <div id="carrito"></div>
+    <button id="vaciar">Vaciar carrito</button>
 
-
+<footer class="footer">
+        <div class="footer-container">
+            <div class="footer-info">
+                <p>&copy; 2025 Tienda de Cursos. Todos los derechos reservados.</p>
+            </div>
+            <div class="footer-links">
+                <a href="#">Términos y condiciones</a>
+                <a href="#">Política de privacidad</a>
+                <a href="#">Contacto</a>
+            </div>
+            <div class="footer-icons">
+                <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
+            </div>
+        </div>
+    </footer>
     <script src="js/data.js"></script>
     <script src="js/main.js"></script>
 </body>

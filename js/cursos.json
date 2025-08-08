@@ -2,5 +2,15 @@
 { "id": 1, "nombre": "HTML desde cero", "precio": 5000 },
 { "id": 2, "nombre": "CSS avanzado", "precio": 7000 },
 { "id": 3, "nombre": "JavaScript completo", "precio": 10000 },
-{ "id": 4, "nombre": "React", "precio": 12000 }
+{ "id": 4, "nombre": "React", "precio": 12000 },
+{ "id": 5, "nombre": "Git y GitHub", "precio": 4500 },
+{ "id": 6, "nombre": "Node.js básico", "precio": 8000 },
+{ "id": 7, "nombre": "Express.js", "precio": 8500 },
+{ "id": 8, "nombre": "MongoDB", "precio": 7500 },
+{ "id": 9, "nombre": "TypeScript desde cero", "precio": 9500 },
+{ "id": 10, "nombre": "Vue.js", "precio": 11000 },
+{ "id": 11, "nombre": "Angular", "precio": 11500 },
+{ "id": 12, "nombre": "Desarrollo Web Full Stack", "precio": 15000 },
+{ "id": 13, "nombre": "Diseño UX/UI", "precio": 9000 },
+{ "id": 14, "nombre": "Python para Web", "precio": 10000 }
 ]
