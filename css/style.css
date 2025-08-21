@@ -114,8 +114,17 @@ button:hover {
     background-color: var(--color-hover);
 }
 
-
 /* carrito de compras */
+.layout {
+display: grid;
+grid-template-columns: 2fr 1fr;
+gap: 2rem;
+align-items: start;
+}
+@media (max-width: 900px) {
+.layout { grid-template-columns: 1fr; }
+}
+
 .h2-index {
     line-height: 1.3;
     color: #000000;
@@ -206,6 +215,32 @@ form button[type="submit"]:hover {
 }
 
 /* gracias.html */
+
+.mensaje-gracias-dinamico {
+    background: var(--color-primario);
+    color: white;
+    padding: 2rem;
+    border-radius: var(--radio);
+    box-shadow: var(--sombra);
+    text-align: center;
+    margin: 2rem auto;
+    max-width: 600px;
+    font-size: 1.2rem;
+    font-weight: 500;
+
+
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
 .gracias-container {
     text-align: center;

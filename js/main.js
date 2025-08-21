@@ -1,216 +1,152 @@
-/* contenedor que muestra los cursos disponibles */
+// Contenedores
 const contenedorCursos = document.getElementById("cursos");
-
-/* contenedor que muestra el carrito */
 const contenedorCarrito = document.getElementById("carrito");
-
-/* boton para vaciar el carrito */
 const btnVaciar = document.getElementById("vaciar");
 
-/* ruta al archivo JSON */
-const URL_LOCAL = "js/cursos.json";
+// Rutas
+const URL_LOCAL = "data/cursos.json"; // antes estaba en js/cursos.json
 
-/*vaciar el carrito  guardar el cambio el localStorage */
-function vaciarCarrito() {
-  carrito = [];
-  guardarCarrito();
+// Render de cursos con innerHTML (sin createElement en bucle)
+function mostrarCursos(listaCursos) {
+  if (!contenedorCursos) return;
+  contenedorCursos.innerHTML = `
+    ${listaCursos.map((curso) => `
+      <div>
+        <h3>${curso.nombre}</h3>
+        <p>Precio: $${curso.precio}</p>
+        <button class="agregar" data-id="${curso.id}">Agregar al carrito</button>
+      </div>
+    `).join("")}
+  `;
 }
 
-/* contenido del carrito */
+// Render del carrito con + / - / eliminar
+if (!Array.isArray(carrito)) carrito = [];
+
 function mostrarCarrito() {
   if (!contenedorCarrito) return;
-  contenedorCarrito.innerHTML = "";
-
   if (carrito.length === 0) {
-    contenedorCarrito.innerText = "El carrito está vacío";
+    contenedorCarrito.innerHTML = "El carrito está vacío";
     return;
   }
 
-  carrito.forEach((curso, index) => {
-    const div = document.createElement("div");
-    div.innerHTML = `
-      ${curso.nombre} - $${curso.precio}
-      <button data-index="${index}" class="eliminar">Eliminar</button>
-    `;
-    contenedorCarrito.appendChild(div);
-  });
+  contenedorCarrito.innerHTML = `
+    ${carrito.map((item) => `
+      <div>
+        ${item.nombre} - $${item.precio} x ${item.cantidad || 1}
+        <span>
+          <button class="menos" data-id="${item.id}">-</button>
+          <button class="mas" data-id="${item.id}">+</button>
+          <button class="eliminar" data-id="${item.id}">Eliminar</button>
+        </span>
+      </div>
+    `).join("")}
+    <div><strong>Total: $${calcularTotal()}</strong></div>
+    <button id="finalizar">Finalizar compra</button>
+  `;
+}
 
-/* para que ande el botón "Eliminar" para quitar cursos del carrito */
-  document.querySelectorAll(".eliminar").forEach(btn =>
-    btn.addEventListener("click", e => {
-      const i = parseInt(e.target.dataset.index);
-      carrito.splice(i, 1);
-      guardarCarrito();
+// Delegación de eventos (carrito)
+if (contenedorCarrito) {
+  contenedorCarrito.addEventListener("click", (e) => {
+    const id = parseInt(e.target.dataset.id, 10);
+    if (e.target.classList.contains("mas")) {
+      aumentarCantidad(id);
       mostrarCarrito();
-      Swal.fire({
-        icon: "warning",
-        title: "Curso eliminado del carrito",
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 2000
-      });
-    })
-  );  
-
-/* total del carrito */
-  const total = carrito.reduce((sum, curso) => sum + curso.precio, 0);
-  const totalDiv = document.createElement("div");
-  totalDiv.innerHTML = `<strong>Total: $${total}</strong>`;
-  contenedorCarrito.appendChild(totalDiv);
-
-/* boton para finalizar la compra */
-  const finalizarBtn = document.createElement("button");
-  finalizarBtn.textContent = "Finalizar compra";
-  finalizarBtn.addEventListener("click", () => {
-    window.location.href = "pages/formulario.html";
-  });
-  contenedorCarrito.appendChild(finalizarBtn);
-}
-
-/* mostrar los cursos disponibles en la página */
-function mostrarCursos(cursos) {
-  if (!contenedorCursos) return;
-  contenedorCursos.innerHTML = "";
-
-
-cursos.forEach(curso => {
-    const div = document.createElement("div");
-    div.innerHTML = `
-      <h3>${curso.nombre}</h3>
-      <p>Precio: $${curso.precio}</p>
-      <button class="agregar" data-id="${curso.id}">Agregar al carrito</button>
-    `;
-    contenedorCursos.appendChild(div);
-  });
-
-/* funcionalidad para agregar cursos al carrito */
-  document.querySelectorAll(".agregar").forEach(btn =>
-    btn.addEventListener("click", e => {
-      const id = parseInt(e.target.dataset.id);
-      agregarCurso(id);
-    })
-  );
-}
-
-/* agregar el curso al carrito */
-async function agregarCurso(id) {
-  try {
-    const res = await fetch(URL_LOCAL);
-    if (!res.ok) throw new Error("Error al cargar cursos");
-    const cursos = await res.json();
-
-    const curso = cursos.find(c => c.id === id); 
-
-    if (curso) {
-      carrito.push(curso);     
-      guardarCarrito();        
-      mostrarCarrito();        
-      Swal.fire({
-        icon: "success",
-        title: `${curso.nombre} agregado al carrito`,
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 2000
-      });
+    } else if (e.target.classList.contains("menos")) {
+      disminuirCantidad(id);
+      mostrarCarrito();
+    } else if (e.target.classList.contains("eliminar")) {
+      eliminarDelCarrito(id);
+      mostrarCarrito();
+      Swal.fire({ icon: "warning", title: "Curso eliminado", toast: true, position: "top-end", showConfirmButton: false, timer: 1600 });
+    } else if (e.target.id === "finalizar") {
+      window.location.href = "/pages/formulario.html"; // antes: pages/formulario.html (no existe)
     }
-  } catch (error) {
-    console.error("Error en agregarCurso:", error);
-  }
+  });
 }
 
-/* filtrar noombre de los cursos */
-/* NUEVO: filtros combinados por nombre y precio con diseño mejorado */
-function aplicarFiltros(cursos) {
-  const filtrosContainer = document.createElement("div");
-  filtrosContainer.className = "filtros-container";
+// Click en "Agregar al carrito"
+if (contenedorCursos) {
+  contenedorCursos.addEventListener("click", (e) => {
+    if (e.target.classList.contains("agregar")) {
+      const id = parseInt(e.target.dataset.id, 10);
+      // Cargar curso por ID y agregar
+      fetch(URL_LOCAL)
+        .then((r) => r.json())
+        .then((cursos) => {
+          const cursoItem = cursos.find((curso) => curso.id === id);
+          if (cursoItem) {
+            agregarAlCarrito(cursoItem);
+            mostrarCarrito();
+            Swal.fire({ icon: "success", title: `${cursoItem.nombre} agregado`, toast: true, position: "top-end", showConfirmButton: false, timer: 1600 });
+          }
+        })
+        .catch((err) => console.error("Error al agregar:", err));
+    }
+  });
+}
 
-  // Buscar por nombre
-  const grupoNombre = document.createElement("div");
-  grupoNombre.className = "filtro-group";
-  const labelNombre = document.createElement("label");
-  labelNombre.textContent = "Buscar por nombre:";
-  const inputNombre = document.createElement("input");
-  inputNombre.placeholder = "Ej: React";
-  inputNombre.className = "filtro-input";
-  grupoNombre.append(labelNombre, inputNombre);
+// Filtros con innerHTML simple
+function aplicarFiltros(listaCursos) {
+  const filtrosHtml = `
+    <div class="filtros-container">
+      <div class="filtro-group">
+        <label>Buscar por nombre:</label>
+        <input id="filtroNombre" class="filtro-input" placeholder="Ej: React">
+      </div>
+      <div class="filtro-group">
+        <label>Precio mínimo:</label>
+        <input id="filtroMin" type="number" class="filtro-input" placeholder="Ej: 5000">
+      </div>
+      <div class="filtro-group">
+        <label>Precio máximo:</label>
+        <input id="filtroMax" type="number" class="filtro-input" placeholder="Ej: 15000">
+      </div>
+    </div>
+  `;
+  contenedorCursos.insertAdjacentHTML("beforebegin", filtrosHtml);
 
-  // Precio mínimo
-  const grupoMin = document.createElement("div");
-  grupoMin.className = "filtro-group";
-  const labelMin = document.createElement("label");
-  labelMin.textContent = "Precio mínimo:";
-  const inputMin = document.createElement("input");
-  inputMin.placeholder = "Ej: 5000";
-  inputMin.type = "number";
-  inputMin.className = "filtro-input";
-  grupoMin.append(labelMin, inputMin);
-
-  // Precio máximo
-  const grupoMax = document.createElement("div");
-  grupoMax.className = "filtro-group";
-  const labelMax = document.createElement("label");
-  labelMax.textContent = "Precio máximo:";
-  const inputMax = document.createElement("input");
-  inputMax.placeholder = "Ej: 15000";
-  inputMax.type = "number";
-  inputMax.className = "filtro-input";
-  grupoMax.append(labelMax, inputMax);
+  const inputNombre = document.getElementById("filtroNombre");
+  const inputMin = document.getElementById("filtroMin");
+  const inputMax = document.getElementById("filtroMax");
 
   const aplicar = () => {
-    const nombre = inputNombre.value.toLowerCase();
+    const nombre = (inputNombre.value || "").toLowerCase();
     const min = parseFloat(inputMin.value) || 0;
     const max = parseFloat(inputMax.value) || Infinity;
 
-    const resultado = cursos.filter(c =>
-      c.nombre.toLowerCase().includes(nombre) &&
-      c.precio >= min &&
-      c.precio <= max
+    const filtrados = listaCursos.filter((curso) =>
+      curso.nombre.toLowerCase().includes(nombre) &&
+      curso.precio >= min &&
+      curso.precio <= max
     );
-
-    mostrarCursos(resultado);
+    mostrarCursos(filtrados);
   };
 
-  [inputNombre, inputMin, inputMax].forEach(input =>
-    input.addEventListener("input", aplicar)
-  );
-
-  filtrosContainer.append(grupoNombre, grupoMin, grupoMax);
-  contenedorCursos.before(filtrosContainer);
+  [inputNombre, inputMin, inputMax].forEach((el) => el.addEventListener("input", aplicar));
 }
 
-
-
-async function cargarCursos() {
-  try {
-    const res = await fetch(URL_LOCAL);
-    if (!res.ok) throw new Error("No se pudo cargar el archivo JSON");
-    const cursos = await res.json();
-
-    mostrarCursos(cursos);           
-    aplicarFiltros(cursos);           
-  } catch (error) {
-    console.error("Error al cargar cursos:", error);
-  }
+// Carga inicial SIN DOMContentLoaded (el profe lo pidió)
+function cargarCursos() {
+  fetch(URL_LOCAL)
+    .then((r) => r.json())
+    .then((cursos) => {
+      mostrarCursos(cursos);
+      aplicarFiltros(cursos);
+    })
+    .catch((err) => console.error("No se pudo cargar el JSON:", err));
 }
 
-/* vaciar carrito */
-btnVaciar.addEventListener("click", () => {
-  vaciarCarrito();   
-  mostrarCarrito();  
-  Swal.fire({
-    icon: "error",
-    title: "Carrito vaciado",
-    toast: true,
-    position: "top-end",
-    showConfirmButton: false,
-    timer: 2000
+// Botón vaciar
+if (btnVaciar) {
+  btnVaciar.addEventListener("click", () => {
+    vaciarCarrito();
+    mostrarCarrito();
+    Swal.fire({ icon: "error", title: "Carrito vaciado", toast: true, position: "top-end", showConfirmButton: false, timer: 1600 });
   });
-});
+}
 
-
-document.addEventListener("DOMContentLoaded", () => {
-  cargarCursos();     
-  mostrarCarrito();   
-});
+// Llamadas directas al final (en vez de DOMContentLoaded)
+cargarCursos();
+mostrarCarrito();

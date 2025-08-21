@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Gracias por tu compra</title>
-    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="/css/style.css" />
 </head>
 
 <body>
@@ -13,5 +13,23 @@
     <h1>¡Gracias por tu compra!</h1>
         <p>En breves nos comunicamos con usted.</p>
             <a href="../index.html">Volver al inicio</a>
+
+
+<script >
+const cliente = JSON.parse(localStorage.getItem("cliente"));
+const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+const total = carrito.reduce((acc, i) => acc + i.precio * (i.cantidad || 1), 0);
+
+if (cliente) {  
+    const msg = document.createElement("p");
+    msg.className = "mensaje-gracias-dinamico"; // Agregar clase CSS
+    msg.textContent = `Gracias, ${cliente.nombre}. Te enviaremos la info a ${cliente.email}. Total de tu compra: $${total}.`;
+    document.body.appendChild(msg);
+}
+
+/* Limpiar localStorage después de la compra */
+localStorage.removeItem("carrito");
+</script>
+
 </body>
 </html>
