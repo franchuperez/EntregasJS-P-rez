@@ -4,11 +4,11 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Formulario de compra</title>
-<link rel="stylesheet" href="/css/style.css" />
+<link rel="stylesheet" href="../css/style.css" />
 
 </head>
 <body>
-  <form id="formCompra" aria-label="Formulario para finalizar compra">
+<form id="formCompra" aria-label="Formulario para finalizar compra">
     <h2>Finalizar compra</h2>
 
     <label for="nombre">Nombre completo</label>
@@ -27,7 +27,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    // Mostrar resumen del carrito en el checkout
+
     const resumenDiv = document.getElementById("resumen");
     const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 
@@ -46,7 +46,6 @@
     `;
     }
 
-    // Submit: guardar datos cliente y pasar a gracias
     document.getElementById("formCompra").addEventListener("submit", (e) => {
     e.preventDefault();
     const cliente = {

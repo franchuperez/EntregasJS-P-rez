@@ -1,7 +1,7 @@
-// Estado del carrito (persistente)
+
 let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 
-// Persistencia
+
 function guardarCarrito() {
 localStorage.setItem("carrito", JSON.stringify(carrito));
 }
@@ -11,7 +11,6 @@ carrito = [];
 guardarCarrito();
 }
 
-// Operaciones de carrito
 function agregarAlCarrito(item) {
 const existente = carrito.find((it) => it.id === item.id);
 if (existente) {

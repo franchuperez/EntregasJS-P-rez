@@ -1,12 +1,10 @@
-// Contenedores
+/* contenedores */
 const contenedorCursos = document.getElementById("cursos");
 const contenedorCarrito = document.getElementById("carrito");
-const btnVaciar = document.getElementById("vaciar");
 
-// Rutas
-const URL_LOCAL = "data/cursos.json"; // antes estaba en js/cursos.json
+/* ruta */
+const URL_LOCAL = "data/cursos.json";
 
-// Render de cursos con innerHTML (sin createElement en bucle)
 function mostrarCursos(listaCursos) {
   if (!contenedorCursos) return;
   contenedorCursos.innerHTML = `
@@ -20,7 +18,6 @@ function mostrarCursos(listaCursos) {
   `;
 }
 
-// Render del carrito con + / - / eliminar
 if (!Array.isArray(carrito)) carrito = [];
 
 function mostrarCarrito() {
@@ -43,10 +40,10 @@ function mostrarCarrito() {
     `).join("")}
     <div><strong>Total: $${calcularTotal()}</strong></div>
     <button id="finalizar">Finalizar compra</button>
+    <button id="vaciar">Vaciar Carrito</button>
   `;
 }
 
-// Delegación de eventos (carrito)
 if (contenedorCarrito) {
   contenedorCarrito.addEventListener("click", (e) => {
     const id = parseInt(e.target.dataset.id, 10);
@@ -59,19 +56,37 @@ if (contenedorCarrito) {
     } else if (e.target.classList.contains("eliminar")) {
       eliminarDelCarrito(id);
       mostrarCarrito();
-      Swal.fire({ icon: "warning", title: "Curso eliminado", toast: true, position: "top-end", showConfirmButton: false, timer: 1600 });
+      Swal.fire({ 
+        icon: "warning", 
+        title: "Curso eliminado", 
+        toast: true, 
+        position: "top-end", 
+        showConfirmButton: false, 
+        timer: 1600 
+      });
     } else if (e.target.id === "finalizar") {
-      window.location.href = "/pages/formulario.html"; // antes: pages/formulario.html (no existe)
+      window.location.href = "pages/formulario.html";
+    } else if (e.target.id === "vaciar") {
+      vaciarCarrito();
+      mostrarCarrito();
+      Swal.fire({ 
+        icon: "error", 
+        title: "Carrito vaciado", 
+        toast: true, 
+        position: "top-end", 
+        showConfirmButton: false, 
+        timer: 1600 
+      });
     }
   });
 }
 
-// Click en "Agregar al carrito"
+/* agregar al carrito */
 if (contenedorCursos) {
   contenedorCursos.addEventListener("click", (e) => {
     if (e.target.classList.contains("agregar")) {
       const id = parseInt(e.target.dataset.id, 10);
-      // Cargar curso por ID y agregar
+      
       fetch(URL_LOCAL)
         .then((r) => r.json())
         .then((cursos) => {
@@ -79,7 +94,14 @@ if (contenedorCursos) {
           if (cursoItem) {
             agregarAlCarrito(cursoItem);
             mostrarCarrito();
-            Swal.fire({ icon: "success", title: `${cursoItem.nombre} agregado`, toast: true, position: "top-end", showConfirmButton: false, timer: 1600 });
+            Swal.fire({ 
+              icon: "success", 
+              title: `${cursoItem.nombre} agregado`, 
+              toast: true, 
+              position: "top-end", 
+              showConfirmButton: false, 
+              timer: 1600 
+            });
           }
         })
         .catch((err) => console.error("Error al agregar:", err));
@@ -87,7 +109,6 @@ if (contenedorCursos) {
   });
 }
 
-// Filtros con innerHTML simple
 function aplicarFiltros(listaCursos) {
   const filtrosHtml = `
     <div class="filtros-container">
@@ -127,7 +148,7 @@ function aplicarFiltros(listaCursos) {
   [inputNombre, inputMin, inputMax].forEach((el) => el.addEventListener("input", aplicar));
 }
 
-// Carga inicial SIN DOMContentLoaded (el profe lo pidió)
+/* cargar los cursos */
 function cargarCursos() {
   fetch(URL_LOCAL)
     .then((r) => r.json())
@@ -138,15 +159,5 @@ function cargarCursos() {
     .catch((err) => console.error("No se pudo cargar el JSON:", err));
 }
 
-// Botón vaciar
-if (btnVaciar) {
-  btnVaciar.addEventListener("click", () => {
-    vaciarCarrito();
-    mostrarCarrito();
-    Swal.fire({ icon: "error", title: "Carrito vaciado", toast: true, position: "top-end", showConfirmButton: false, timer: 1600 });
-  });
-}
-
-// Llamadas directas al final (en vez de DOMContentLoaded)
 cargarCursos();
 mostrarCarrito();
