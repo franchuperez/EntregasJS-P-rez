@@ -48,13 +48,13 @@ if (contenedorCarrito) {
   contenedorCarrito.addEventListener("click", (e) => {
     const id = parseInt(e.target.dataset.id, 10);
     if (e.target.classList.contains("mas")) {
-      aumentarCantidad(id);
+      sumar(id);
       mostrarCarrito();
     } else if (e.target.classList.contains("menos")) {
-      disminuirCantidad(id);
+      restar(id);
       mostrarCarrito();
     } else if (e.target.classList.contains("eliminar")) {
-      eliminarDelCarrito(id);
+      eliminar(id);
       mostrarCarrito();
       Swal.fire({ 
         icon: "warning", 
@@ -81,7 +81,8 @@ if (contenedorCarrito) {
   });
 }
 
-/* agregar al carrito */
+/* sumar al carrito */
+
 if (contenedorCursos) {
   contenedorCursos.addEventListener("click", (e) => {
     if (e.target.classList.contains("agregar")) {
@@ -92,11 +93,11 @@ if (contenedorCursos) {
         .then((cursos) => {
           const cursoItem = cursos.find((curso) => curso.id === id);
           if (cursoItem) {
-            agregarAlCarrito(cursoItem);
+            sumaralcarrito(cursoItem);
             mostrarCarrito();
             Swal.fire({ 
               icon: "success", 
-              title: `${cursoItem.nombre} agregado`, 
+              title: `${cursoItem.nombre}. !Curso agregado!`, 
               toast: true, 
               position: "top-end", 
               showConfirmButton: false, 
@@ -149,6 +150,7 @@ function aplicarFiltros(listaCursos) {
 }
 
 /* cargar los cursos */
+
 function cargarCursos() {
   fetch(URL_LOCAL)
     .then((r) => r.json())

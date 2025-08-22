@@ -11,7 +11,7 @@ carrito = [];
 guardarCarrito();
 }
 
-function agregarAlCarrito(item) {
+function sumaralcarrito(item) {
 const existente = carrito.find((it) => it.id === item.id);
 if (existente) {
     existente.cantidad = (existente.cantidad || 1) + 1;
@@ -21,11 +21,11 @@ if (existente) {
 guardarCarrito();
 }
 
-function aumentarCantidad(id) {
+function sumar(id) {
 const it = carrito.find((i) => i.id === id);
 if (it) { it.cantidad += 1; guardarCarrito(); }
 }
-function disminuirCantidad(id) {
+function restar(id) {
 const it = carrito.find((i) => i.id === id);
 if (it) {
     it.cantidad -= 1;
@@ -35,7 +35,7 @@ if (it) {
     guardarCarrito();
 }
 }
-function eliminarDelCarrito(id) {
+function eliminar(id) {
 carrito = carrito.filter((i) => i.id !== id);
 guardarCarrito();
 }

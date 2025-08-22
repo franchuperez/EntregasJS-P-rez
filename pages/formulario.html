@@ -20,7 +20,22 @@
     <label for="email">Correo electronico</label>
     <input type="email" id="email" name="email" placeholder="Ej: ana@email.com" required />
 
+    <label for="numero de telefono">Numero de telefono</label>
+    <input type="text" id="telefono" name="telefono" placeholder="Ej: 1122334455" required />
+
+    <label for="metodo de pago">Metodo de pago</label>
+    <input type="text" id="metodoPago" name="metodoPago" placeholder="Ej: Tarjeta de credito / debito" required />
+
+    <label for="contacto">Método de contacto preferido</label>
+    <select id="contacto" name="contacto" required>
+        <option value="" disabled selected>Elegí una opción</option>
+        <option value="email">Email</option>
+        <option value="telefono">Teléfono</option>
+        <option value="whatsapp">WhatsApp</option>
+    </select>
+
     <button type="submit">Confirmar compra</button>
+
 </form>
 
 <section id="resumen" class="gracias-container" aria-live="polite"></section>
