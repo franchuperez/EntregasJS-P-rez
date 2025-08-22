@@ -58,7 +58,7 @@ if (contenedorCarrito) {
       mostrarCarrito();
       Swal.fire({ 
         icon: "warning", 
-        title: "Curso eliminado", 
+        title: "!Curso eliminado con exito!", 
         toast: true, 
         position: "top-end", 
         showConfirmButton: false, 

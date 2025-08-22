@@ -20,7 +20,7 @@
     <label for="email">Correo electronico</label>
     <input type="email" id="email" name="email" placeholder="Ej: ana@email.com" required />
 
-    <label for="numero de telefono">Numero de telefono</label>
+    <label for="telefono">Numero de telefono</label>
     <input type="text" id="telefono" name="telefono" placeholder="Ej: 1122334455" required />
 
     <label for="metodo de pago">Metodo de pago</label>
@@ -66,7 +66,10 @@
     const cliente = {
         nombre: document.getElementById("nombre").value.trim(),
         edad: parseInt(document.getElementById("edad").value, 10),
-        email: document.getElementById("email").value.trim()
+        email: document.getElementById("email").value.trim(),
+        telefono: document.getElementById("telefono").value.trim(),
+        metodoPago: document.getElementById("metodoPago").value.trim(),
+        contacto: document.getElementById("contacto").value
     };
     localStorage.setItem("cliente", JSON.stringify(cliente));
     window.location.href = "gracias.html";

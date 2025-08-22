@@ -23,7 +23,8 @@ const total = carrito.reduce((acc, i) => acc + i.precio * (i.cantidad || 1), 0);
 if (cliente) {  
     const msg = document.createElement("p");
     msg.className = "mensaje-gracias";
-    msg.textContent = `Gracias, ${cliente.nombre}.  Tu pago fue aprobado con exito! Te enviaremos la info a ${cliente.email}. Total de tu compra: $${total}.`;
+    msg.textContent = `Muchisimas gracias!!, ${cliente.nombre}. Tu pago fue aprobado con éxito. En instantes recibiras un mensaje con toda la info a ${cliente.contacto === "email" ? cliente.email : cliente.telefono}. Total: $${total}.`;
+
     document.body.appendChild(msg);
 }
 
