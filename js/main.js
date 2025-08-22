@@ -23,7 +23,7 @@ if (!Array.isArray(carrito)) carrito = [];
 function mostrarCarrito() {
   if (!contenedorCarrito) return;
   if (carrito.length === 0) {
-    contenedorCarrito.innerHTML = "El carrito está vacío";
+    contenedorCarrito.innerHTML = "El carrito esta vacio";
     return;
   }
 
