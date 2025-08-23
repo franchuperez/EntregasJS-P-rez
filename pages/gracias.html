@@ -11,23 +11,70 @@
 
 <div class="gracias-container">
     <h1>¡Gracias por tu compra!</h1>
-        <p>En breves nos comunicamos con usted.</p>
-            <a href="../index.html">Volver al inicio</a>
+    <p>En breves nos comunicamos con usted.</p>
+    <a href="../index.html">Volver al inicio</a>
+</div>
 
+<section id="resumen" class="gracias-container" aria-live="polite"></section>
 
-<script >
+<script>
 const cliente = JSON.parse(localStorage.getItem("cliente"));
 const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-const total = carrito.reduce((acc, i) => acc + i.precio * (i.cantidad || 1), 0);
 
-if (cliente) {  
-    const msg = document.createElement("p");
-    msg.className = "mensaje-gracias";
-    msg.textContent = `Muchisimas gracias!!, ${cliente.nombre}. Tu pago fue aprobado con éxito. En instantes recibiras un mensaje con toda la info a ${cliente.contacto === "email" ? cliente.email : cliente.telefono}. Total: $${total}.`;
+/*resumen de compra y datos del cliente*/
+function mostrarResumenCompleto() {
+    const resumenDiv = document.getElementById("resumen");
+    
+    if (!cliente) {
+        resumenDiv.innerHTML = "<p>No se encontraron datos del cliente.</p>";
+        return;
+    }
+    
+    if (carrito.length === 0) {
+        resumenDiv.innerHTML = "<p>No hay productos en el carrito.</p>";
+        return;
+    }
 
-    document.body.appendChild(msg);
+    // Calcular el total
+    const total = carrito.reduce((acc, item) => acc + item.precio * (item.cantidad || 1), 0);
+    
+    // Crear lista de productos
+    const listaProductos = carrito.map(item => `
+        <li>${item.nombre} x ${item.cantidad || 1} → $${item.precio * (item.cantidad || 1)}</li>
+    `).join("");
+
+    const clienteHtml = `
+        <h2>Datos del cliente</h2>
+        <p><strong>Nombre:</strong> ${cliente.nombre}</p>
+        <p><strong>Edad:</strong> ${cliente.edad}</p>
+        <p><strong>Email:</strong> ${cliente.email}</p>
+        <p><strong>Teléfono:</strong> ${cliente.telefono}</p>
+        <p><strong>Método de pago:</strong> ${cliente.metodoPago}</p>
+        <p><strong>Contacto preferido:</strong> ${cliente.contacto}</p>
+    `;
+
+/* mostrar los dos resumenes */
+    resumenDiv.innerHTML = `
+        <div class="resumen-dos-columnas">
+            <div class="columna-cliente">
+                ${clienteHtml}
+            </div>
+            <div class="columna-compra">
+                <h2>Resumen de compra</h2>
+                <ul style="text-align:left; display:inline-block">${listaProductos}</ul>
+                <p><strong>Total: ${total}</strong></p>
+            </div>
+        </div>
+    `;
+}
+/* mensaje de gracias */
+if (cliente && carrito.length > 0) {
+    const total = carrito.reduce((acc, i) => acc + i.precio * (i.cantidad || 1), 0);
 }
 
+mostrarResumenCompleto();
+
+/*para reiniciar el carrito al finalizar la compra*/
 localStorage.removeItem("carrito");
 </script>
 

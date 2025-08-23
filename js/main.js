@@ -1,10 +1,10 @@
 /* contenedores */
 const contenedorCursos = document.getElementById("cursos");
-const contenedorCarrito = document.getElementById("carrito");
 
-/* ruta */
-const URL_LOCAL = "data/cursos.json";
+/* ruta al JSON */
+const URL_LOCAL = "./data/cursos.json";
 
+/* mostrar cursos */
 function mostrarCursos(listaCursos) {
   if (!contenedorCursos) return;
   contenedorCursos.innerHTML = `
@@ -18,86 +18,21 @@ function mostrarCursos(listaCursos) {
   `;
 }
 
-if (!Array.isArray(carrito)) carrito = [];
-
-function mostrarCarrito() {
-  if (!contenedorCarrito) return;
-  if (carrito.length === 0) {
-    contenedorCarrito.innerHTML = "El carrito esta vacio";
-    return;
-  }
-
-  contenedorCarrito.innerHTML = `
-    ${carrito.map((item) => `
-      <div>
-        ${item.nombre} - $${item.precio} x ${item.cantidad || 1}
-        <span>
-          <button class="menos" data-id="${item.id}">-</button>
-          <button class="mas" data-id="${item.id}">+</button>
-          <button class="eliminar" data-id="${item.id}">Eliminar</button>
-        </span>
-      </div>
-    `).join("")}
-    <div><strong>Total: $${calcularTotal()}</strong></div>
-    <button id="finalizar">Finalizar compra</button>
-    <button id="vaciar">Vaciar Carrito</button>
-  `;
-}
-
-if (contenedorCarrito) {
-  contenedorCarrito.addEventListener("click", (e) => {
-    const id = parseInt(e.target.dataset.id, 10);
-    if (e.target.classList.contains("mas")) {
-      sumar(id);
-      mostrarCarrito();
-    } else if (e.target.classList.contains("menos")) {
-      restar(id);
-      mostrarCarrito();
-    } else if (e.target.classList.contains("eliminar")) {
-      eliminar(id);
-      mostrarCarrito();
-      Swal.fire({ 
-        icon: "warning", 
-        title: "!Curso eliminado con exito!", 
-        toast: true, 
-        position: "top-end", 
-        showConfirmButton: false, 
-        timer: 1600 
-      });
-    } else if (e.target.id === "finalizar") {
-      window.location.href = "pages/formulario.html";
-    } else if (e.target.id === "vaciar") {
-      vaciarCarrito();
-      mostrarCarrito();
-      Swal.fire({ 
-        icon: "error", 
-        title: "Carrito vaciado", 
-        toast: true, 
-        position: "top-end", 
-        showConfirmButton: false, 
-        timer: 1600 
-      });
-    }
-  });
-}
-
-/* sumar al carrito */
-
+/* agregar al carrito */
 if (contenedorCursos) {
   contenedorCursos.addEventListener("click", (e) => {
     if (e.target.classList.contains("agregar")) {
       const id = parseInt(e.target.dataset.id, 10);
-      
+
       fetch(URL_LOCAL)
-        .then((r) => r.json())
+        .then((response) => response.json())
         .then((cursos) => {
           const cursoItem = cursos.find((curso) => curso.id === id);
           if (cursoItem) {
-            sumaralcarrito(cursoItem);
-            mostrarCarrito();
+            sumaralcarrito(cursoItem); 
             Swal.fire({ 
               icon: "success", 
-              title: `${cursoItem.nombre}. !Curso agregado!`, 
+              title: `${cursoItem.nombre} agregado al carrito`, 
               toast: true, 
               position: "top-end", 
               showConfirmButton: false, 
@@ -105,11 +40,12 @@ if (contenedorCursos) {
             });
           }
         })
-        .catch((err) => console.error("Error al agregar:", err));
+        .catch((error) => console.error("Error al agregar:", error));
     }
   });
 }
 
+/* filtros */
 function aplicarFiltros(listaCursos) {
   const filtrosHtml = `
     <div class="filtros-container">
@@ -146,20 +82,18 @@ function aplicarFiltros(listaCursos) {
     mostrarCursos(filtrados);
   };
 
-  [inputNombre, inputMin, inputMax].forEach((el) => el.addEventListener("input", aplicar));
+  [inputNombre, inputMin, inputMax].forEach((elemento) => elemento.addEventListener("input", aplicar));
 }
 
-/* cargar los cursos */
-
+/* cargar cursos */
 function cargarCursos() {
   fetch(URL_LOCAL)
-    .then((r) => r.json())
+    .then((response) => response.json())
     .then((cursos) => {
       mostrarCursos(cursos);
       aplicarFiltros(cursos);
     })
-    .catch((err) => console.error("No se pudo cargar el JSON:", err));
+    .catch((error) => console.error("No se pudo cargar el JSON:", error));
 }
 
 cargarCursos();
-mostrarCarrito();

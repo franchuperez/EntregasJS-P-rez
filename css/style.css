@@ -12,13 +12,88 @@
     --sombra-hover: 0 6px 16px rgba(0, 0, 0, 0.18);
     --radio: 16px;
 }
+html , body {
+    height: 100%;
+    margin: 0;
+}
+
+main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;      
+    padding: 2rem;
+}
 
 body {
+    display: flex;
+    flex-direction: column;
     font-family: 'Segoe UI', Tahoma, Verdana, sans-serif;
     margin: 2rem;
     background-color: var(--color-fondo);
     color: var(--color-texto);
     font-size: 18px;
+}
+
+/* header */
+
+header {
+    background-color: #585858;
+    padding: 1rem 2rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+/* Estilos para el nav */
+.linksdelna {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.linksdelna a {
+    text-decoration: none;
+    color: white;
+    font-weight: 600;
+    font-size: 1.1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.linksdelna a[href*="carrito"] {
+    background-color: var(--color-primario);
+}
+
+.linksdelna a[href*="carrito"]:hover {
+    background-color: var(--color-primario)
+
+}
+
+.linksdelna a[href*="index"] {
+    background-color: var(--color-primario);
+}
+
+@media (max-width: 600px) {
+    header {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+    
+    .linksdelna {
+        justify-content: center;
+        gap: 1rem;
+    }
+    
+    .linksdelna a {
+        font-size: 1rem;
+        padding: 0.4rem 0.8rem;
+    }
 }
 
 /* h1, h2 */
@@ -28,13 +103,12 @@ h1, .h2-index {
     text-align: center;
     margin-bottom: 2rem;
     font-size: 5rem;
-    border-bottom: 2px solid #282828;
     padding-bottom: 0.5rem;
 }
 
 .layout {
     display: grid;
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: 1fr;
     gap: 2rem;
     align-items: start;
 }
@@ -48,18 +122,22 @@ h1, .h2-index {
 /* cursos */
 
 #cursos {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 5rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     align-items: stretch;
-    padding: 10px;
+    gap: 2rem;
+    padding: 2rem;
+    max-width: 1200px; 
+    margin: 0 auto; 
 }
 
 #cursos div {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 100%;
+    width: 250px;
+    height: 300px;
     background: white;
     border: var(--borde);
     padding: 1.5rem;
@@ -69,7 +147,6 @@ h1, .h2-index {
     text-align: center;
     font-size: 1.5rem;
 }
-
 #cursos div:hover {
     transform: scale(1.03);
     box-shadow: var(--sombra-hover);
@@ -90,13 +167,13 @@ h1, .h2-index {
     max-width: 600px;
     margin: 2rem auto;
     padding: 1rem;
-    background-color: var(--color-carrito);
-    border-radius: var(--radio);
-    box-shadow: var(--sombra);
+    background-color: white;
+    border-radius: white;
+    box-shadow: white;
 }
 
 #carrito div {
-    background: var(--color-carrito);
+    background: var(--color-confirmacion);
     padding: 0.8rem;
     margin-bottom: 0.5rem;
     border: var(--borde);
@@ -252,6 +329,67 @@ form input[type="email"] {
     border-radius: 5px;
     box-sizing: border-box;
 }
+
+/* resumen de los datos del cliente y compra */
+.resumen-dos-columnas {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 2rem;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.columna-cliente,.columna-compra {
+    background-color: white;
+    padding: 10px;
+    border-radius: var(--radio);
+    box-shadow: var(--sombra);
+    border: var(--borde);
+}
+
+.columna-cliente h2,.columna-compra h2 {
+    color: black;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    text-align: center;
+}
+
+.columna-cliente p {
+    margin: 0.8rem 0;
+    font-size: 1rem;
+    line-height: 1.4;
+}
+
+.columna-compra ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 1rem 0;
+}
+
+.columna-compra li {
+    background-color: white;
+    padding: 0.8rem;
+    margin: 0.8rem 0;
+    border-radius: 6px;
+    border: var(--borde);
+    font-size: 0.95rem;
+}
+
+.columna-compra p strong {
+    font-size: 1.2rem;
+    color: var(--color-texto);
+}
+
+@media (max-width: 768px) {
+    .resumen-dos-columnas {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+}
+
 
 /* gracias .html */
 

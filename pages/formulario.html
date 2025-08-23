@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Formulario de compra</title>
-<link rel="stylesheet" href="../css/style.css" />
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Formulario de compra</title>
+  <link rel="stylesheet" href="../css/style.css" />
 </head>
 <body>
-<form id="formCompra" aria-label="Formulario para finalizar compra">
+  <form id="formCompra" aria-label="Formulario para finalizar compra">
     <h2>Finalizar compra</h2>
 
     <label for="nombre">Nombre completo</label>
@@ -17,64 +16,72 @@
     <label for="edad">Edad</label>
     <input type="number" id="edad" name="edad" min="1" max="120" placeholder="Ej: 30" required />
 
-    <label for="email">Correo electronico</label>
+    <label for="email">Correo electrónico</label>
     <input type="email" id="email" name="email" placeholder="Ej: ana@email.com" required />
 
-    <label for="telefono">Numero de telefono</label>
+    <label for="telefono">Número de teléfono</label>
     <input type="text" id="telefono" name="telefono" placeholder="Ej: 1122334455" required />
 
-    <label for="metodo de pago">Metodo de pago</label>
-    <input type="text" id="metodoPago" name="metodoPago" placeholder="Ej: Tarjeta de credito / debito" required />
+    <label for="metodoPago">Método de pago</label>
+    <input type="text" id="metodoPago" name="metodoPago" placeholder="Ej: Tarjeta de crédito / débito" required />
 
     <label for="contacto">Método de contacto preferido</label>
     <select id="contacto" name="contacto" required>
-        <option value="" disabled selected>Elegí una opción</option>
-        <option value="email">Email</option>
-        <option value="telefono">Teléfono</option>
-        <option value="whatsapp">WhatsApp</option>
+      <option value="" disabled selected>Elegí una opción</option>
+      <option value="email">Email</option>
+      <option value="telefono">Teléfono</option>
+      <option value="whatsapp">WhatsApp</option>
     </select>
 
     <button type="submit">Confirmar compra</button>
+  </form>
 
-</form>
-
-<section id="resumen" class="gracias-container" aria-live="polite"></section>
-
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <section id="resumen" class="gracias-container" aria-live="polite"></section>
+  
 <script>
-
     const resumenDiv = document.getElementById("resumen");
     const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 
-    if (carrito.length === 0) {
-    resumenDiv.innerHTML = "<p>No hay productos en el carrito.</p>";
-    } else {
-      const total = carrito.reduce((acc, item) => acc + item.precio * (item.cantidad || 1), 0);
-    const lista = carrito.map(item => `
-        <li>${item.nombre} x ${item.cantidad || 1} - $${item.precio * (item.cantidad || 1)}</li>
-    `).join("");
+    function mostrarResumen() {
+      if (carrito.length === 0) {
+        resumenDiv.innerHTML = "<p>No hay productos en el carrito.</p>";
+        return;
+      }
 
-    resumenDiv.innerHTML = `
-        <h1>Resumen de compra</h1>
+      const total = carrito.reduce((acc, item) => acc + item.precio * (item.cantidad || 1), 0);
+      const lista = carrito.map(item => `
+        <li>${item.nombre} x ${item.cantidad || 1} → $${item.precio * (item.cantidad || 1)}</li>
+      `).join("");
+
+      resumenDiv.innerHTML = `
+        <h2>Resumen de compra</h2>
         <ul style="text-align:left; display:inline-block">${lista}</ul>
         <p><strong>Total: $${total}</strong></p>
-    `;
+      `;
     }
+    
+    mostrarResumen();
+    
+    const formCompra = document.getElementById("formCompra");
+    if (formCompra) {
+        formCompra.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const cliente = {
+                nombre: document.getElementById("nombre").value.trim(),
+                edad: parseInt(document.getElementById("edad").value, 10),
+                email: document.getElementById("email").value.trim(),
+                telefono: document.getElementById("telefono").value.trim(),
+                metodoPago: document.getElementById("metodoPago").value.trim(),
+                contacto: document.getElementById("contacto").value
+            };
+            
+            localStorage.setItem("cliente", JSON.stringify(cliente));
+            
 
-    document.getElementById("formCompra").addEventListener("submit", (e) => {
-    e.preventDefault();
-    const cliente = {
-        nombre: document.getElementById("nombre").value.trim(),
-        edad: parseInt(document.getElementById("edad").value, 10),
-        email: document.getElementById("email").value.trim(),
-        telefono: document.getElementById("telefono").value.trim(),
-        metodoPago: document.getElementById("metodoPago").value.trim(),
-        contacto: document.getElementById("contacto").value
-    };
-    localStorage.setItem("cliente", JSON.stringify(cliente));
-    window.location.href = "gracias.html";
-    });
+            window.location.href = "gracias.html";
+        });
+    }
 </script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
-
 </html>
