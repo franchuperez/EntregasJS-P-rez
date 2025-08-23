@@ -64,7 +64,7 @@ function restar(id) {
   guardarCarrito();
 }
 
-/* para eliminar algun producto del carrito */
+/* para eliminar cursos del carrito */
 function eliminar(id) {
   carrito = carrito.filter(curso => curso.id !== id);
   guardarCarrito();

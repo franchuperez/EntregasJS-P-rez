@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="../css/style.css" />
 </head>
 <body>
+  <!-- formulario para los datos -->
   <form id="formCompra" aria-label="Formulario para finalizar compra">
     <h2>Finalizar compra</h2>
 
@@ -35,7 +36,7 @@
 
     <button type="submit">Confirmar compra</button>
   </form>
-
+      <!-- resumen de la compra --> 
   <section id="resumen" class="gracias-container" aria-live="polite"></section>
   
 <script>
@@ -59,7 +60,7 @@
         <p><strong>Total: $${total}</strong></p>
       `;
     }
-    
+
     mostrarResumen();
     
     const formCompra = document.getElementById("formCompra");
@@ -77,7 +78,6 @@
             
             localStorage.setItem("cliente", JSON.stringify(cliente));
             
-
             window.location.href = "gracias.html";
         });
     }

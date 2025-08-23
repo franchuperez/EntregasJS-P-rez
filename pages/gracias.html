@@ -8,7 +8,6 @@
 </head>
 
 <body>
-
 <div class="gracias-container">
     <h1>¡Gracias por tu compra!</h1>
     <p>En breves nos comunicamos con usted.</p>
@@ -21,7 +20,7 @@
 const cliente = JSON.parse(localStorage.getItem("cliente"));
 const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 
-/*resumen de compra y datos del cliente*/
+/* resumen de compra y datos del cliente */
 function mostrarResumenCompleto() {
     const resumenDiv = document.getElementById("resumen");
     
@@ -35,10 +34,10 @@ function mostrarResumenCompleto() {
         return;
     }
 
-    // Calcular el total
+/* calcular el total de la compra */
     const total = carrito.reduce((acc, item) => acc + item.precio * (item.cantidad || 1), 0);
     
-    // Crear lista de productos
+/* crear lista de productos para mostrarle al final*/
     const listaProductos = carrito.map(item => `
         <li>${item.nombre} x ${item.cantidad || 1} → $${item.precio * (item.cantidad || 1)}</li>
     `).join("");
@@ -74,7 +73,7 @@ if (cliente && carrito.length > 0) {
 
 mostrarResumenCompleto();
 
-/*para reiniciar el carrito al finalizar la compra*/
+/* para reiniciar el carrito al finalizar la compra*/
 localStorage.removeItem("carrito");
 </script>
 
